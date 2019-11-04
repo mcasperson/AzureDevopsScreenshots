@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "test" {
-  name     = "#{Octopus.Release.Id | Replace "-" | ToLower}"
+  name     = "#{Octopus.Deployment.Id | Replace "-" | ToLower}"
   location = "West US"
     tags = {
       Owner = "@matthew.casperson"
@@ -42,7 +42,7 @@ resource "azurerm_network_interface" "test" {
 }
 
 resource "azurerm_storage_account" "test" {
-  name                     = "#{Octopus.Release.Id | Replace "-" | ToLower}"
+  name                     = "#{Octopus.Deployment.Id | Replace "-" | ToLower}"
   resource_group_name      = "${azurerm_resource_group.test.name}"
   location                 = "${azurerm_resource_group.test.location}"
   account_tier             = "Standard"
