@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "test" {
-  name     = "AzureDevopsGuideScreenshotCreator#{Octopus.Release.Id | Replace "-"}"
+  name     = "AzureDevopsGuideScreenshotCreator#{Octopus.Release.Id | Replace "-" | ToLower}"
   location = "West US"
     tags = {
       Owner = "@matthew.casperson"
@@ -33,7 +33,7 @@ resource "azurerm_network_interface" "test" {
 }
 
 resource "azurerm_storage_account" "test" {
-  name                     = "AzureDevopsGuideScreenshotCreator#{Octopus.Release.Id | Replace "-"}"
+  name                     = "AzureDevopsGuideScreenshotCreator#{Octopus.Release.Id | Replace "-" | ToLower}"
   resource_group_name      = "${azurerm_resource_group.test.name}"
   location                 = "${azurerm_resource_group.test.location}"
   account_tier             = "Standard"
