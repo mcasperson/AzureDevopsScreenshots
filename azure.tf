@@ -96,11 +96,12 @@ resource "azurerm_virtual_machine_extension" "test" {
   virtual_machine_name = "${azurerm_virtual_machine.test.name}"
   publisher            = "Microsoft.Compute"
   type                 = "CustomScriptExtension"
-  type_handler_version = "2.0"
-
-  settings = <<SETTINGS
+  type_handler_version = "1.9"
+  
+  protected_settings = <<PROTECTED_SETTINGS
     {
-        "commandToExecute": "powershell.exe -Command \"Set-ExecutionPolicy Bypass -Scope Process -Force; Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1')); choco install -y git; cd c:\\; & 'C:\\Program Files\\Git\\bin\\git' clone https://github.com/OctopusDeploy/OctopusGuides.git; cd OctopusGuides; ./install.ps1 -Scripts utilities.pp,azuredevops.pp,azurewait.pp; & 'C:\\Program Files\\OpenJDK\\jdk-13\\bin\\java' --enable-preview '-Dwebdriver.gecko.driver=C:\\tools\\geckodriver.exe' '-DslackHookUrl=#{SlackWebHook}' '-DslackStepHandlerEnabled=true' -jar c:\\tools\\webdrivertraining-1.0-SNAPSHOT.jar --tags '(@login or @install-extensions)' features\\azuredevops\\azuredevops-aspnet-project.feature\""
+      "commandToExecute": "commandToExecute": "powershell.exe -Command \"Set-ExecutionPolicy Bypass -Scope Process -Force; Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1')); choco install -y git; cd c:\\; & 'C:\\Program Files\\Git\\bin\\git' clone https://github.com/OctopusDeploy/OctopusGuides.git; cd OctopusGuides; ./install.ps1 -Scripts utilities.pp,azuredevops.pp,azurewait.pp; & 'C:\\Program Files\\OpenJDK\\jdk-13\\bin\\java' --enable-preview '-Dwebdriver.gecko.driver=C:\\tools\\geckodriver.exe' '-DslackHookUrl=#{SlackWebHook}' '-DslackStepHandlerEnabled=true' -jar c:\\tools\\webdrivertraining-1.0-SNAPSHOT.jar --tags '(@login or @install-extensions)' features\\azuredevops\\azuredevops-aspnet-project.feature\""
+
     }
-SETTINGS
+  PROTECTED_SETTINGS
 }
