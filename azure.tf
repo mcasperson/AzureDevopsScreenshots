@@ -6,6 +6,14 @@ resource "azurerm_resource_group" "test" {
   }
 }
 
+resource "azurerm_public_ip" "test" {
+  name                    = "test-pip"
+  location                = "${azurerm_resource_group.test.location}"
+  resource_group_name     = "${azurerm_resource_group.test.name}"
+  allocation_method       = "Dynamic"
+  idle_timeout_in_minutes = 30
+}
+
 resource "azurerm_virtual_network" "test" {
   name                = "acctvn"
   address_space       = ["10.0.0.0/16"]
@@ -29,6 +37,7 @@ resource "azurerm_network_interface" "test" {
     name                          = "testconfiguration1"
     subnet_id                     = "${azurerm_subnet.test.id}"
     private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = "${azurerm_public_ip.test.id}"
   }
 }
 
