@@ -73,6 +73,11 @@ resource "azurerm_virtual_machine" "test" {
     admin_username = "testadmin"
     admin_password = "Password1234!"
   }
+  
+  os_profile_windows_config {
+    enable_automatic_upgrades = false
+    provision_vm_agent = true
+  }
 }
 
 resource "azurerm_virtual_machine_extension" "test" {
