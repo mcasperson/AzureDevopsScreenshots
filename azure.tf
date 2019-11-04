@@ -33,15 +33,11 @@ resource "azurerm_network_interface" "test" {
 }
 
 resource "azurerm_storage_account" "test" {
-  name                     = "AzureDevopsGuideScreenshotCreator"
+  name                     = "AzureDevopsGuideScreenshotCreator#{Octopus.Release.Id}"
   resource_group_name      = "${azurerm_resource_group.test.name}"
   location                 = "${azurerm_resource_group.test.location}"
   account_tier             = "Standard"
   account_replication_type = "LRS"
-
-  tags = {
-    environment = "staging"
-  }
 }
 
 resource "azurerm_storage_container" "test" {
@@ -66,8 +62,8 @@ resource "azurerm_virtual_machine" "test" {
   }
 
   storage_os_disk {
-    name          = "#{Octopus.Release.Id}"
-    vhd_uri       = "${azurerm_storage_account.test.primary_blob_endpoint}${azurerm_storage_container.test.name}/#{Octopus.Release.Id}.vhd"
+    name          = "osdisk"
+    vhd_uri       = "${azurerm_storage_account.test.primary_blob_endpoint}${azurerm_storage_container.test.name}/osdisk.vhd"
     caching       = "ReadWrite"
     create_option = "FromImage"
   }
@@ -76,14 +72,6 @@ resource "azurerm_virtual_machine" "test" {
     computer_name  = "hostname"
     admin_username = "testadmin"
     admin_password = "Password1234!"
-  }
-
-  os_profile_linux_config {
-    disable_password_authentication = false
-  }
-
-  tags = {
-    environment = "staging"
   }
 }
 
@@ -101,8 +89,4 @@ resource "azurerm_virtual_machine_extension" "test" {
         "commandToExecute": "Set-ExecutionPolicy Bypass -Scope Process -Force; Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1')); choco install -y git; git clone https://github.com/OctopusDeploy/OctopusGuides.git; cd OctopusGuides; ./install.ps1 -Scripts azuredevops.pp,utilities.pp,azurewait.pp; & \"C:\\Program Files\\OpenJDK\\jdk-13\\bin\\java\" --enable-preview -Dwebdriver.gecko.driver=C:\\tools\\geckodriver.exe -DslackHookUrl=#{SlackWebHook} -DslackStepHandlerEnabled=true -jar c:\\tools\\webdrivertraining-1.0-SNAPSHOT.jar --tags (@login or @install-extensions) features\\azuredevops\\azuredevops-aspnet-project.feature"
     }
 SETTINGS
-
-  tags = {
-    environment = "Production"
-  }
 }
