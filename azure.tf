@@ -33,7 +33,7 @@ resource "azurerm_network_interface" "test" {
 }
 
 resource "azurerm_storage_account" "test" {
-  name                     = "accsa"
+  name                     = "AzureDevopsGuideScreenshotCreator"
   resource_group_name      = "${azurerm_resource_group.test.name}"
   location                 = "${azurerm_resource_group.test.location}"
   account_tier             = "Standard"
@@ -66,8 +66,8 @@ resource "azurerm_virtual_machine" "test" {
   }
 
   storage_os_disk {
-    name          = "myosdisk1"
-    vhd_uri       = "${azurerm_storage_account.test.primary_blob_endpoint}${azurerm_storage_container.test.name}/myosdisk1.vhd"
+    name          = "#{Octopus.Release.Id}"
+    vhd_uri       = "${azurerm_storage_account.test.primary_blob_endpoint}${azurerm_storage_container.test.name}/#{Octopus.Release.Id}.vhd"
     caching       = "ReadWrite"
     create_option = "FromImage"
   }
