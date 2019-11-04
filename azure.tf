@@ -59,9 +59,9 @@ resource "azurerm_virtual_machine" "test" {
   vm_size               = "Standard_F2"
 
   storage_image_reference {
-    publisher = "Canonical"
-    offer     = "UbuntuServer"
-    sku       = "16.04-LTS"
+    publisher = "MicrosoftWindowsServer"
+    offer     = "WindowsServer"
+    sku       = "2012-R2-Datacenter"
     version   = "latest"
   }
 
