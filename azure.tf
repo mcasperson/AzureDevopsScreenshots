@@ -102,7 +102,7 @@ resource "azurerm_virtual_machine_extension" "test" {
   # some additional tools, and then run the WebDriver script that initalises Azure Devops.
   protected_settings = <<PROTECTED_SETTINGS
     {
-      "commandToExecute": "powershell.exe -Command \"./initialize.ps1; ./chocolatey.ps1; ./git.ps1; ./guide.ps1; exit 0\""
+      "commandToExecute": "powershell.exe -Command \"./initialize.ps1; ./chocolatey.ps1; ./git.ps1; ./guide.ps1 -Password '#{OSPassword}' -SlackHook '#{SlackWebHook}'; exit 0\""
     }
   PROTECTED_SETTINGS
 
